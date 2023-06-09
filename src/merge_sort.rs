@@ -1,31 +1,19 @@
-trait SelectionSort<T> {
-    fn selection_sort(&mut self)
+trait MergeSort<T> {
+    fn merge_sort(&mut self)
     where
-        T: Ord + std::fmt::Debug;
+        T: Ord;
 }
 
-impl<T> SelectionSort<T> for Vec<T>
+impl<T> MergeSort<T> for Vec<T>
 where
-    T: Ord + std::fmt::Debug,
+    T: Ord,
 {
-    // Worst case time complexity: Θ(n^2)
-    // Average case time complexity: Θ(n^2)
-    // Best case time complexity: Θ(n^2)
-    // Space complexity: Θ(1)
-    fn selection_sort(&mut self) {
-        if self.len() <= 1 {
-            return;
-        }
-
-        for i in 0..self.len() - 1 {
-            let mut smallest = i;
-            for j in i + 1..self.len() {
-                if self[j] < self[smallest] {
-                    smallest = j;
-                }
-            }
-            self.swap(i, smallest);
-        }
+    // Worst case time complexity:
+    // Average case time complexity:
+    // Best case time complexity:
+    // Space complexity:
+    fn merge_sort(&mut self) {
+        todo!()
     }
 }
 
@@ -49,7 +37,7 @@ mod test {
         ];
 
         for (got, want) in tests.iter_mut() {
-            got.selection_sort();
+            got.merge_sort();
             assert_eq!(got, want);
         }
     }
