@@ -11,53 +11,50 @@ where
     // Worst case time complexity: Θ(nlogn)
     // Average case time complexity: Θ(nlogn)
     // Best case time complexity: Θ(nlogn)
-    // Space complexity: Θ(n)
+    // Space complexity: Θ(nlogn)
     fn merge_sort(&mut self) {
-        let len = self.len();
-        if len <= 1 {
+        if self.len() <= 1 {
             return;
         }
-        let mut temp_arr: Vec<T> = Vec::with_capacity(len);
-        merge(self, &mut temp_arr, 0, len);
+
+        let mid = self.len() / 2;
+        let mut left = self[..mid].to_vec();
+        let mut right = self[mid..].to_vec();
+
+        left.merge_sort();
+        right.merge_sort();
+
+        self.clear();
+        merge(self, &left, &right);
     }
 }
 
-fn merge<T: Ord + Clone>(arr: &mut [T], temp_vec: &mut Vec<T>, from: usize, to: usize) {
-    if to - from <= 1 {
-        return;
-    }
+fn merge<T>(v: &mut Vec<T>, left: &[T], right: &[T])
+where
+    T: Ord + Clone,
+{
+    let mut l = 0;
+    let mut r = 0;
 
-    let mid = from + (to - from) / 2;
-    merge(arr, temp_vec, from, mid);
-    merge(arr, temp_vec, mid, to);
-
-    let mut i = from;
-    let mut j = mid;
-    while i < mid && j < to {
-        if arr[i] <= arr[j] {
-            temp_vec.push(arr[i].clone());
-            i += 1;
+    while l < left.len() && r < right.len() {
+        if left[l] <= right[r] {
+            v.push(left[l].clone());
+            l += 1;
         } else {
-            temp_vec.push(arr[j].clone());
-            j += 1;
+            v.push(right[r].clone());
+            r += 1;
         }
     }
 
-    while i < mid {
-        temp_vec.push(arr[i].clone());
-        i += 1;
+    while l < left.len() {
+        v.push(left[l].clone());
+        l += 1;
     }
 
-    while j < to {
-        temp_vec.push(arr[j].clone());
-        j += 1;
+    while r < right.len() {
+        v.push(right[r].clone());
+        r += 1;
     }
-
-    for i in 0..temp_vec.len() {
-        arr[from + i] = temp_vec[i].clone();
-    }
-
-    temp_vec.clear();
 }
 
 #[cfg(test)]

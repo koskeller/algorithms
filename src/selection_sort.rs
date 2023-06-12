@@ -24,7 +24,10 @@ where
                     smallest = j;
                 }
             }
-            self.swap(i, smallest);
+
+            if self[i] != self[smallest] {
+                self.swap(i, smallest);
+            }
         }
     }
 }
