@@ -1,32 +1,26 @@
-trait SelectionSort<T> {
-    fn selection_sort(&mut self)
+trait BubbleSort<T> {
+    fn bubble_sort(&mut self)
     where
-        T: Ord + std::fmt::Debug;
+        T: Ord;
 }
 
-impl<T> SelectionSort<T> for Vec<T>
+impl<T> BubbleSort<T> for Vec<T>
 where
-    T: Ord + std::fmt::Debug,
+    T: Ord + Clone,
 {
-    // Worst case time complexity: Θ(n^2)
+    // Worst case time complexity: Θ(^2)
     // Average case time complexity: Θ(n^2)
-    // Best case time complexity: Θ(n^2)
+    // Best case time complexity: Θ(n)
     // Space complexity: Θ(1)
-    fn selection_sort(&mut self) {
-        if self.len() <= 1 {
-            return;
-        }
-
-        for i in 0..self.len() - 1 {
-            let mut smallest = i;
-            for j in i + 1..self.len() {
-                if self[j] < self[smallest] {
-                    smallest = j;
+    fn bubble_sort(&mut self) {
+        let mut swapped = true;
+        while swapped {
+            swapped = false;
+            for n in 1..self.len() {
+                if self[n] < self[n - 1] {
+                    self.swap(n, n - 1);
+                    swapped = true;
                 }
-            }
-
-            if self[i] != self[smallest] {
-                self.swap(i, smallest);
             }
         }
     }
@@ -41,9 +35,9 @@ mod test {
         let mut tests = vec![
             (vec![], vec![]),
             (vec![1], vec![1]),
-            (vec![1, 1], vec![1, 1]),
             (vec![1, 2], vec![1, 2]),
             (vec![2, 1], vec![1, 2]),
+            (vec![1, 1], vec![1, 1]),
             (vec![3, 1, -0, 5, -1, 44, 0], vec![-1, -0, 0, 1, 3, 5, 44]),
             (vec![3, 0, 0, 5, 0, 0, 1], vec![0, 0, 0, 0, 1, 3, 5]),
             (vec![1000; 1000], vec![1000; 1000]),
@@ -53,7 +47,7 @@ mod test {
         ];
 
         for (got, want) in tests.iter_mut() {
-            got.selection_sort();
+            got.bubble_sort();
             assert_eq!(got, want);
         }
     }

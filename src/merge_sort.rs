@@ -27,7 +27,7 @@ fn merge<T: Ord + Clone>(arr: &mut [T], temp_vec: &mut Vec<T>, from: usize, to: 
         return;
     }
 
-    let mid = from + (to - from) / 2;
+    let mid = (from + to) / 2;
     merge(arr, temp_vec, from, mid);
     merge(arr, temp_vec, mid, to);
 
@@ -54,7 +54,7 @@ fn merge<T: Ord + Clone>(arr: &mut [T], temp_vec: &mut Vec<T>, from: usize, to: 
     }
 
     for i in 0..temp_vec.len() {
-        arr[from + i] = temp_vec[i].clone();
+        std::mem::swap(&mut arr[from + i], &mut temp_vec[i]);
     }
 
     temp_vec.clear();
