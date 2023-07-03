@@ -4,3 +4,5 @@ mod merge_sort;
 mod merge_sort_simple;
 mod quick_sort;
 mod selection_sort;
+
+mod parentheses;
