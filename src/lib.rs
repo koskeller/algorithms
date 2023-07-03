@@ -6,3 +6,4 @@ mod quick_sort;
 mod selection_sort;
 
 mod parentheses;
+mod telephone_keypad;
