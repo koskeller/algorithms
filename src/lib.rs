@@ -7,3 +7,4 @@ mod selection_sort;
 
 mod parentheses;
 mod telephone_keypad;
+mod tic_tac_toe;
