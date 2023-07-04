@@ -8,9 +8,17 @@
 pub struct Game {
     size: i32,
     rows: Vec<i32>,
-    columns: Vec<i32>,
+    cols: Vec<i32>,
     diag: i32,
     anti_diag: i32,
+}
+
+#[derive(PartialEq, Eq, Debug)]
+pub enum Outcome {
+    X,
+    O,
+    Draw,
+    Pending,
 }
 
 impl Game {
@@ -18,93 +26,151 @@ impl Game {
         Self {
             size: size as i32,
             rows: vec![0; size],
-            columns: vec![0; size],
+            cols: vec![0; size],
             diag: 0,
             anti_diag: 0,
         }
     }
 
-    pub fn play(&mut self, moves: Vec<Vec<i32>>) -> bool {
-        let mut x: i32 = 1;
-        for m in moves {
-            let row = m[0] as usize;
-            self.rows[row] += x;
+    pub fn play(&mut self, moves: Vec<Vec<i32>>) -> Outcome {
+        let mut count: i32 = 1;
+        for mov in &moves {
+            let row = mov[0] as usize;
+            self.rows[row] += count;
 
-            let col = m[1] as usize;
-            self.columns[col] += x;
+            let col = mov[1] as usize;
+            self.cols[col] += count;
 
             if row == col {
-                self.diag += x;
+                self.diag += count;
             }
 
             if row + col == self.size as usize - 1 {
-                self.anti_diag += x;
+                self.anti_diag += count;
             }
 
-            if x == 1 {
-                x = -1;
+            if count == 1 {
+                count = -1;
             } else {
-                x = 1;
+                count = 1;
             }
 
             if self.rows[row] == self.size
-                || self.columns[col] == self.size
+                || self.cols[col] == self.size
                 || self.diag == self.size
                 || self.anti_diag == self.size
             {
-                return true;
+                return Outcome::X;
+            }
+
+            if self.rows[row] == -self.size
+                || self.cols[col] == -self.size
+                || self.diag == -self.size
+                || self.anti_diag == -self.size
+            {
+                return Outcome::O;
             }
         }
 
-        return false;
+        if moves.len() == (self.size * self.size) as usize {
+            return Outcome::Draw;
+        }
+
+        return Outcome::Pending;
     }
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test_new_game() {
-        let game = Game::new(3);
-        assert_eq!(game.size, 3);
-        assert_eq!(game.rows, vec![0; 3]);
-        assert_eq!(game.columns, vec![0; 3]);
-        assert_eq!(game.diag, 0);
-        assert_eq!(game.anti_diag, 0);
+    fn it_detects_a_win_for_x_in_a_row() {
+        let mut game = Game::new(3);
+        assert_eq!(
+            game.play(vec![
+                vec![0, 0],
+                vec![1, 1],
+                vec![0, 1],
+                vec![2, 2],
+                vec![0, 2]
+            ]),
+            Outcome::X
+        );
     }
 
     #[test]
-    fn test_play_no_winner() {
+    fn it_detects_a_win_for_o_in_a_column() {
         let mut game = Game::new(3);
-        let moves = vec![vec![0, 0], vec![1, 1], vec![0, 2], vec![2, 2]];
-        assert_eq!(game.play(moves), false);
+        assert_eq!(
+            game.play(vec![
+                vec![0, 0],
+                vec![0, 1],
+                vec![1, 0],
+                vec![1, 1],
+                vec![2, 0],
+                vec![2, 1]
+            ]),
+            Outcome::X
+        );
     }
 
     #[test]
-    fn test_play_winner_row() {
+    fn it_detects_a_win_for_x_in_a_diagonal() {
         let mut game = Game::new(3);
-        let moves = vec![vec![0, 0], vec![1, 1], vec![0, 1], vec![2, 2], vec![0, 2]];
-        assert_eq!(game.play(moves), true);
+        assert_eq!(
+            game.play(vec![
+                vec![0, 0],
+                vec![0, 1],
+                vec![1, 1],
+                vec![0, 2],
+                vec![2, 2]
+            ]),
+            Outcome::X
+        );
     }
 
     #[test]
-    fn test_play_winner_column() {
+    fn it_detects_a_win_for_o_in_an_anti_diagonal() {
         let mut game = Game::new(3);
-        let moves = vec![vec![0, 0], vec![1, 1], vec![1, 0], vec![2, 2], vec![2, 0]];
-        assert_eq!(game.play(moves), true);
+        assert_eq!(
+            game.play(vec![
+                vec![0, 0],
+                vec![0, 2],
+                vec![1, 0],
+                vec![1, 1],
+                vec![0, 1],
+                vec![0, 2]
+            ]),
+            Outcome::O
+        );
     }
 
     #[test]
-    fn test_play_winner_left_diag() {
+    fn it_detects_a_draw() {
         let mut game = Game::new(3);
-        let moves = vec![vec![0, 0], vec![0, 1], vec![1, 1], vec![0, 2], vec![2, 2]];
-        assert_eq!(game.play(moves), true);
+        assert_eq!(
+            game.play(vec![
+                vec![0, 0],
+                vec![1, 1],
+                vec![2, 0],
+                vec![1, 0],
+                vec![1, 2],
+                vec![2, 1],
+                vec![0, 1],
+                vec![0, 2],
+                vec![2, 2]
+            ]),
+            Outcome::Draw
+        );
     }
 
     #[test]
-    fn test_play_winner_right_diag() {
+    fn it_returns_pending_if_game_is_still_in_progress() {
         let mut game = Game::new(3);
-        let moves = vec![vec![0, 2], vec![0, 1], vec![1, 1], vec![0, 0], vec![2, 0]];
-        assert_eq!(game.play(moves), true);
+        assert_eq!(
+            game.play(vec![vec![0, 0], vec![0, 1], vec![0, 2], vec![1, 0]]),
+            Outcome::Pending
+        );
     }
 }
