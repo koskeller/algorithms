@@ -8,8 +8,8 @@ pub struct TreeNode {
     pub right: Option<Rc<RefCell<TreeNode>>>,
 }
 
-// https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
-// Basic idea: on each iteration set constrains of min and max value for descendant nodes
+// https://leetcode.com/problems/validate-binary-search-tree/
+// Solution: set min & max values on each iteration.
 // Time complexity: O(n)
 // Space complixity: O(n) because of stack
 pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
