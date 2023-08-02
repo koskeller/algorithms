@@ -6,15 +6,13 @@ mod merge_sort_simple;
 mod quick_sort;
 mod selection_sort;
 
-mod k_unique;
-mod parentheses;
-mod telephone_keypad;
-mod tic_tac_toe;
-
 // BTree problems
 mod construct_btree;
 mod is_valid_bst;
 
-// LeetCode
+// Other
 mod binary_search;
-mod union_from_unsorted;
+mod k_unique;
+mod parentheses;
+mod telephone_keypad;
+mod tic_tac_toe;

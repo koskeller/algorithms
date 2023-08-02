@@ -1,3 +1,4 @@
+#![allow(unused)]
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -11,7 +12,7 @@ pub struct TreeNode {
 // https://leetcode.com/problems/validate-binary-search-tree/
 // Solution: set min & max values on each iteration.
 // Time complexity: O(n)
-// Space complixity: O(n) because of stack
+// Space complixity: O(n)
 pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     is_valid_fn(
         root.clone(),
