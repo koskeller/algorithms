@@ -30,6 +30,27 @@ fn binary_search_recursive<T: Ord>(
     }
 }
 
+// Worst case time complexity: Θ(logn)
+// Average case time complexity: Θ(logn)
+// Best case time complexity: Θ(1)
+// Space complexity: Θ(1)
+fn binary_search_iterative<T: Ord>(arr: &[T], target: &T) -> Option<usize> {
+    let mut start = 0;
+    let mut end = arr.len();
+
+    while start < end {
+        let mid = start + (end - start) / 2;
+        if arr[mid] == *target {
+            return Some(mid);
+        } else if arr[mid] > *target {
+            end = mid;
+        } else {
+            start = mid + 1;
+        }
+    }
+    None
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
