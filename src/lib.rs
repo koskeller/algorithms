@@ -1,3 +1,4 @@
+// Sorting algorithms
 mod bubble_sort;
 mod insertion_sort;
 mod merge_sort;
@@ -15,4 +16,5 @@ mod construct_btree;
 mod is_valid_bst;
 
 // LeetCode
+mod binary_search;
 mod union_from_unsorted;
