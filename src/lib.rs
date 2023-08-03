@@ -10,8 +10,11 @@ mod selection_sort;
 mod construct_btree;
 mod is_valid_bst;
 
-// Other
+// Search
 mod binary_search;
+mod count_occurrences;
+
+// Other
 mod k_unique;
 mod parentheses;
 mod telephone_keypad;

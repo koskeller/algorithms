@@ -20,7 +20,7 @@ fn binary_search_recursive<T: Ord>(
     if start >= end {
         return None;
     }
-    let mid = (end - start) / 2 + start;
+    let mid = (start + end) / 2;
     if arr[mid] == *target {
         return Some(mid);
     } else if arr[mid] > *target {
@@ -39,7 +39,7 @@ fn binary_search_iterative<T: Ord>(arr: &[T], target: &T) -> Option<usize> {
     let mut end = arr.len();
 
     while start < end {
-        let mid = start + (end - start) / 2;
+        let mid = (start + end) / 2;
         if arr[mid] == *target {
             return Some(mid);
         } else if arr[mid] > *target {
@@ -71,6 +71,7 @@ mod tests {
     #[test]
     fn test_multiple_elements_array() {
         let arr = [1, 2, 3, 4, 5];
+        assert_eq!(binary_search(&arr, &0), None);
         assert_eq!(binary_search(&arr, &1), Some(0));
         assert_eq!(binary_search(&arr, &3), Some(2));
         assert_eq!(binary_search(&arr, &5), Some(4));
