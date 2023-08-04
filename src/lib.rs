@@ -13,6 +13,7 @@ mod is_valid_bst;
 // Search
 mod binary_search;
 mod count_occurrences;
+mod one_sided_binary_search;
 
 // Other
 mod k_unique;
